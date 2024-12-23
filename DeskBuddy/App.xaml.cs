@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using ABI.Windows.Storage;
+using DeskBuddy.Resources;
 using DeskBuddy.Views;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Application = System.Windows.Application;
@@ -38,12 +39,12 @@ public partial class App
         {
             Icon = new Icon("Resources/Icon.ico"),
             Visible = true,
-            Text = "Desk Buddy"
+            Text = Messages.ApplicationTitle
         };
 
         var contextMenu = new ContextMenuStrip();
-        contextMenu.Items.Add("Settings", null, (_, _) => ShowConfigurationWindow());
-        contextMenu.Items.Add("Exit", null, (_, _) => ShutdownApplication());
+        contextMenu.Items.Add(Messages.Button_Settings, null, (_, _) => ShowConfigurationWindow());
+        contextMenu.Items.Add(Messages.Button_Exit, null, (_, _) => ShutdownApplication());
 
         _trayIcon.ContextMenuStrip = contextMenu;
     }
@@ -66,8 +67,8 @@ public partial class App
 
     private void ShowNotification()
     {
-        var title = _isStanding ? "Time to Sit!" : "Time to Stand!";
-        var message = _isStanding ? "Please lower your desk and sit down." : "Please raise your desk and stand up.";
+        var title = _isStanding ? Messages.Toast_TimeToSit_Title : Messages.Toast_TimeToStand_Title;
+        var message = _isStanding ? Messages.Toast_TimeToSit_Message : Messages.Toast_TimeToStand_Message;
 
         var fileName = _isStanding ? "Down.png" : "Up.png";
         var filePath = Path.Combine(Environment.CurrentDirectory, "Resources", fileName);
@@ -76,9 +77,9 @@ public partial class App
             .AddAppLogoOverride(new Uri(filePath))
             .AddText(title)
             .AddText(message)
-            .AddButton(new ToastButton("OK", "ok")
+            .AddButton(new ToastButton(Messages.Button_Ok, "ok")
                 .SetBackgroundActivation())
-            .AddButton(new ToastButton("Reset", "reset")
+            .AddButton(new ToastButton(Messages.Button_Reset, "reset")
                 .SetBackgroundActivation())
             .SetToastScenario(ToastScenario.Reminder)
             .Show();
