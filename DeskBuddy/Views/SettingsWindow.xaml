@@ -3,18 +3,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:DeskBuddy.Views"
+        xmlns:viewModels="clr-namespace:DeskBuddy.ViewModels"
         mc:Ignorable="d"
-        Title="SettingsWindow" Height="200" Width="300">
-    <Grid>
+        Title="Settings" Height="200" Width="300" >
+    
+    <Grid d:DataContext="{d:DesignInstance Type=viewModels:SettingsViewModel, IsDesignTimeCreatable=True}">
         <StackPanel Margin="10">
-            <TextBlock Text="Sit Interval (minutes)" />
-            <TextBox Name="SitIntervalTextBox"  />
+            <!-- Sit Interval Input -->
+            <TextBlock Text="Sit Interval (minutes)" Margin="0,0,0,5" />
+            <TextBox Text="{Binding SitIntervalMinutes, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
 
-            <TextBlock Text="Stand Interval (minutes)" />
-            <TextBox Name="StandIntervalTextBox"  />
+            <!-- Stand Interval Input -->
+            <TextBlock Text="Stand Interval (minutes)" Margin="0,0,0,5"/>
+            <TextBox Text="{Binding StandIntervalMinutes, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
 
-            <Button Content="Save" Click="SaveButton_Click" />
+            <!-- Save Button -->
+            <Button Content="Save" Command="{Binding SaveCommand}" HorizontalAlignment="Right" Width="75"/>
         </StackPanel>
     </Grid>
 </Window>

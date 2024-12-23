@@ -2,14 +2,11 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using ABI.Windows.Storage;
+using DeskBuddy.Models;
 using DeskBuddy.Resources;
 using DeskBuddy.Views;
 using Microsoft.Toolkit.Uwp.Notifications;
-using Application = System.Windows.Application;
-using StorageFile = Windows.Storage.StorageFile;
 
 namespace DeskBuddy;
 
@@ -108,12 +105,18 @@ public partial class App
 
     private void ShowConfigurationWindow()
     {
-        var settingsWindow = new SettingsWindow(_sitInterval, _standInterval);
+        var settingsModel = new SettingsModel
+        {
+            SitInterval = _sitInterval,
+            StandInterval = _standInterval
+        };
+        
+        var settingsWindow = new SettingsWindow(settingsModel);
 
         if (settingsWindow.ShowDialog() == false) return;
 
-        _sitInterval = settingsWindow.SitInterval;
-        _standInterval = settingsWindow.StandInterval;
+        _sitInterval = settingsModel.SitInterval;
+        _standInterval = settingsModel.StandInterval;
         _timer.Interval = _isStanding ? _standInterval : _sitInterval;
     }
 
