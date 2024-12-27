@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:viewModels="clr-namespace:DeskBuddy.ViewModels"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:resources="clr-namespace:DeskBuddy.Resources"
         mc:Ignorable="d"
         Title="Settings" SizeToContent="Height"
         Width="300"
@@ -13,17 +14,17 @@
     <Grid d:DataContext="{d:DesignInstance Type=viewModels:SettingsViewModel, IsDesignTimeCreatable=True}">
         <StackPanel Margin="10">
             <!-- Sit Interval Input -->
-            <TextBlock Text="Sit Interval (minutes)" Margin="0,10,0,5" />
+            <TextBlock Text="{x:Static resources:Messages.Settings_SitInterval}" Margin="0,10,0,5" />
             <materialDesign:NumericUpDown Value="{Binding SitIntervalMinutes, UpdateSourceTrigger=PropertyChanged}"
-                                          Minimum="1" Margin="10,0,0,10" />
+                                          Minimum="1" Margin="0,0,0,10"  />
 
             <!-- Stand Interval Input -->
-            <TextBlock Text="Stand Interval (minutes)" Margin="0,15,0,5" />
+            <TextBlock Text="{x:Static resources:Messages.Settings_StandInterval}" Margin="0,15,0,5" />
             <materialDesign:NumericUpDown Value="{Binding StandIntervalMinutes, UpdateSourceTrigger=PropertyChanged}"
-                                          Minimum="1" Margin="10,0,0,10" />
+                                          Minimum="1" Margin="0,0,0,10"  />
 
             <!-- Save Button -->
-            <Button Content="Save" Command="{Binding SaveCommand}" HorizontalAlignment="Right" Width="75"
+            <Button Content="{x:Static resources:Messages.Settings_Save}" Command="{Binding SaveCommand}" HorizontalAlignment="Right" MinWidth="75"
                     Margin="10,10,0,10"/>
         </StackPanel>
     </Grid>

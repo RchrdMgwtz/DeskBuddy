@@ -105,6 +105,33 @@ namespace DeskBuddy.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Settings_Save {
+            get {
+                return ResourceManager.GetString("Settings_Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sit Interval (minutes).
+        /// </summary>
+        public static string Settings_SitInterval {
+            get {
+                return ResourceManager.GetString("Settings_SitInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stant Interval (minutes).
+        /// </summary>
+        public static string Settings_StandInterval {
+            get {
+                return ResourceManager.GetString("Settings_StandInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please lower your desk and sit down..
         /// </summary>
         public static string Toast_TimeToSit_Message {

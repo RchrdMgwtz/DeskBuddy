@@ -38,4 +38,13 @@
     <data name="Button_Ok" xml:space="preserve">
         <value>OK</value>
     </data>
+    <data name="Settings_SitInterval" xml:space="preserve">
+        <value>Intervall Sitzen (Minuten)</value>
+    </data>
+    <data name="Settings_Save" xml:space="preserve">
+        <value>Speichern</value>
+    </data>
+    <data name="Settings_StandInterval" xml:space="preserve">
+        <value>Intervall Stehen (Minuten)</value>
+    </data>
 </root>
