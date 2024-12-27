@@ -3,4 +3,6 @@
 public interface ITimerService
 {
     void Start();
+
+    void OnApplicationExit();
 }

@@ -13,10 +13,10 @@ public class TimerService(SettingsModel settingsModel) : ITimerService
     private const string ResourcesDirectory = "Resources";
     private const string OkArgument = "ok";
     private const string ResetArgument = "reset";
-    
+
     private DispatcherTimer _timer = new();
     private bool _isStanding;
-    
+
     public void Start()
     {
         _timer = new DispatcherTimer
@@ -26,6 +26,8 @@ public class TimerService(SettingsModel settingsModel) : ITimerService
         _timer.Tick += Timer_Tick;
         _timer.Start();
     }
+
+    public void OnApplicationExit() => _timer.Stop();
 
     private void Timer_Tick(object? sender, EventArgs e)
     {

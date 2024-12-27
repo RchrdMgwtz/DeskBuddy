@@ -7,7 +7,6 @@ using DeskBuddy.Resources;
 using DeskBuddy.Services;
 using DeskBuddy.ViewModels;
 using DeskBuddy.Views;
-using MaterialDesignThemes.Wpf;
 
 namespace DeskBuddy;
 
@@ -17,6 +16,7 @@ namespace DeskBuddy;
 public partial class App
 {
     private NotifyIcon _trayIcon = new();
+    private ITimerService? _timerService;
     private readonly TimeSpan _sitInterval = TimeSpan.FromMinutes(0.1);
     private readonly TimeSpan _standInterval = TimeSpan.FromMinutes(0.25);
 
@@ -24,23 +24,18 @@ public partial class App
     {
         base.OnStartup(e);
         ShutdownMode = ShutdownMode.OnExplicitShutdown;
-        
-        /*var paletteHelper = new PaletteHelper();
-        var theme = paletteHelper.GetTheme();
-
-        theme.SetPrimaryColor((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#076163"));
-        paletteHelper.SetTheme(theme);*/
 
         var builder = new ContainerBuilder();
         ConfigureServices(builder);
-
         var container = builder.Build();
 
         InitializeTrayIcon(container);
-        
-        var timerService = container.Resolve<ITimerService>();
-        timerService.Start();
+
+        _timerService = container.Resolve<ITimerService>();
+        _timerService.Start();
     }
+
+    protected override void OnExit(ExitEventArgs e) => _timerService?.OnApplicationExit();
 
     private void InitializeTrayIcon(IContainer container)
     {
