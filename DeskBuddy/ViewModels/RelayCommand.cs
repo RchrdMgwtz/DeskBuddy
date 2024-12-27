@@ -2,7 +2,7 @@
 
 namespace DeskBuddy.ViewModels;
 
-public class RelayCommand(Action execute, Func<bool> canExecute) : ICommand
+public partial class RelayCommand(Action execute, Func<bool> canExecute) : ICommand
 {
     public bool CanExecute(object? parameter)
         => canExecute();

@@ -5,7 +5,7 @@ using DeskBuddy.Models;
 
 namespace DeskBuddy.ViewModels;
 
-public class SettingsViewModel : INotifyPropertyChanged
+public sealed partial class SettingsViewModel : INotifyPropertyChanged
 {
     private readonly SettingsModel _settingsModel;
 
@@ -46,7 +46,7 @@ public class SettingsViewModel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
@@ -57,6 +57,6 @@ public class SettingsViewModel : INotifyPropertyChanged
         _settingsModel.StandInterval = TimeSpan.FromMinutes(StandIntervalMinutes);
     }
 
-    private bool CanSave()
-        => SitIntervalMinutes > 0 && StandIntervalMinutes > 0;
+    private static bool CanSave()
+        => true;
 }

@@ -1,12 +1,13 @@
 ﻿using System.Drawing;
-using System.IO;
 using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Threading;
+using Autofac;
 using DeskBuddy.Models;
 using DeskBuddy.Resources;
+using DeskBuddy.Services;
+using DeskBuddy.ViewModels;
 using DeskBuddy.Views;
-using Microsoft.Toolkit.Uwp.Notifications;
+using MaterialDesignThemes.Wpf;
 
 namespace DeskBuddy;
 
@@ -16,21 +17,32 @@ namespace DeskBuddy;
 public partial class App
 {
     private NotifyIcon _trayIcon = new();
-    private DispatcherTimer _timer = new();
-    private TimeSpan _sitInterval = TimeSpan.FromMinutes(0.1);
-    private TimeSpan _standInterval = TimeSpan.FromMinutes(0.25);
-    private bool _isStanding;
+    private readonly TimeSpan _sitInterval = TimeSpan.FromMinutes(0.1);
+    private readonly TimeSpan _standInterval = TimeSpan.FromMinutes(0.25);
 
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
         ShutdownMode = ShutdownMode.OnExplicitShutdown;
+        
+        /*var paletteHelper = new PaletteHelper();
+        var theme = paletteHelper.GetTheme();
 
-        InitializeTrayIcon();
-        InitializeTimer();
+        theme.SetPrimaryColor((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#076163"));
+        paletteHelper.SetTheme(theme);*/
+
+        var builder = new ContainerBuilder();
+        ConfigureServices(builder);
+
+        var container = builder.Build();
+
+        InitializeTrayIcon(container);
+        
+        var timerService = container.Resolve<ITimerService>();
+        timerService.Start();
     }
 
-    private void InitializeTrayIcon()
+    private void InitializeTrayIcon(IContainer container)
     {
         _trayIcon = new NotifyIcon
         {
@@ -40,84 +52,17 @@ public partial class App
         };
 
         var contextMenu = new ContextMenuStrip();
-        contextMenu.Items.Add(Messages.Button_Settings, null, (_, _) => ShowConfigurationWindow());
+        contextMenu.Items.Add(Messages.Button_Settings, null, (_, _) => ShowConfigurationWindow(container));
         contextMenu.Items.Add(Messages.Button_Exit, null, (_, _) => ShutdownApplication());
 
         _trayIcon.ContextMenuStrip = contextMenu;
     }
 
-    private void InitializeTimer()
+
+    private static void ShowConfigurationWindow(IContainer container)
     {
-        _timer = new DispatcherTimer
-        {
-            Interval = _isStanding ? _standInterval : _sitInterval
-        };
-        _timer.Tick += Timer_Tick;
-        _timer.Start();
-    }
-
-    private void Timer_Tick(object? sender, EventArgs e)
-    {
-        _timer.Stop();
-        ShowNotification();
-    }
-
-    private void ShowNotification()
-    {
-        var title = _isStanding ? Messages.Toast_TimeToSit_Title : Messages.Toast_TimeToStand_Title;
-        var message = _isStanding ? Messages.Toast_TimeToSit_Message : Messages.Toast_TimeToStand_Message;
-
-        var fileName = _isStanding ? "Down.png" : "Up.png";
-        var filePath = Path.Combine(Environment.CurrentDirectory, "Resources", fileName);
-
-        new ToastContentBuilder()
-            .AddAppLogoOverride(new Uri(filePath))
-            .AddText(title)
-            .AddText(message)
-            .AddButton(new ToastButton(Messages.Button_Ok, "ok")
-                .SetBackgroundActivation())
-            .AddButton(new ToastButton(Messages.Button_Reset, "reset")
-                .SetBackgroundActivation())
-            .SetToastScenario(ToastScenario.Reminder)
-            .Show();
-
-        ToastNotificationManagerCompat.OnActivated += ToastActivated;
-    }
-
-    private void ToastActivated(ToastNotificationActivatedEventArgsCompat e)
-    {
-        switch (e.Argument)
-        {
-            case "ok":
-                _isStanding = !_isStanding;
-                _timer.Interval = _isStanding ? _standInterval : _sitInterval;
-                break;
-            case "reset":
-                break;
-            default:
-                _isStanding = !_isStanding;
-                _timer.Interval = _isStanding ? _standInterval : _sitInterval;
-                break;
-        }
-
-        _timer.Start();
-    }
-
-    private void ShowConfigurationWindow()
-    {
-        var settingsModel = new SettingsModel
-        {
-            SitInterval = _sitInterval,
-            StandInterval = _standInterval
-        };
-        
-        var settingsWindow = new SettingsWindow(settingsModel);
-
-        if (settingsWindow.ShowDialog() == false) return;
-
-        _sitInterval = settingsModel.SitInterval;
-        _standInterval = settingsModel.StandInterval;
-        _timer.Interval = _isStanding ? _standInterval : _sitInterval;
+        var settingsView = container.Resolve<SettingsView>();
+        settingsView.ShowDialog();
     }
 
     private void ShutdownApplication()
@@ -125,5 +70,19 @@ public partial class App
         _trayIcon.Visible = false;
         _trayIcon.Dispose();
         Current.Shutdown();
+    }
+
+    private void ConfigureServices(ContainerBuilder builder)
+    {
+        builder.RegisterType<TimerService>().As<ITimerService>();
+
+        // Settings
+        builder.RegisterInstance(new SettingsModel
+        {
+            SitInterval = _sitInterval,
+            StandInterval = _standInterval
+        }).SingleInstance();
+        builder.RegisterType<SettingsViewModel>();
+        builder.RegisterType<SettingsView>();
     }
 }
