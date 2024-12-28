@@ -36,6 +36,8 @@ public sealed partial class SettingsViewModel : INotifyPropertyChanged
     }
 
     public ICommand SaveCommand { get; }
+    
+    public Action? CloseWindow { get; set; }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -48,6 +50,7 @@ public sealed partial class SettingsViewModel : INotifyPropertyChanged
     {
         _settingsModel.SitInterval = SitIntervalMinutes;
         _settingsModel.StandInterval = StandIntervalMinutes;
+        CloseWindow?.Invoke();
     }
 
     private static bool CanSave()

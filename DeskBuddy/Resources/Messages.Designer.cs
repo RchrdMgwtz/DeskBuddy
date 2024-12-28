@@ -123,7 +123,7 @@ namespace DeskBuddy.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stant Interval (minutes).
+        ///   Looks up a localized string similar to Stand Interval (minutes).
         /// </summary>
         public static string Settings_StandInterval {
             get {

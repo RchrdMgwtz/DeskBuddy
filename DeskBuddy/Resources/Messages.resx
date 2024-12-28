@@ -49,7 +49,7 @@
         <value>Sit Interval (minutes)</value>
     </data>
     <data name="Settings_StandInterval" xml:space="preserve">
-        <value>Stant Interval (minutes)</value>
+        <value>Stand Interval (minutes)</value>
     </data>
     <data name="Settings_Save" xml:space="preserve">
         <value>Save</value>
