@@ -29,6 +29,9 @@ public partial class App
         var builder = new ContainerBuilder();
         ConfigureServices(builder);
         var container = builder.Build();
+        
+        var initialView = container.Resolve<InitialView>();
+        initialView.ShowDialog();
 
         InitializeTrayIcon(container);
 
@@ -68,7 +71,7 @@ public partial class App
         Current.Shutdown();
     }
 
-    private void ConfigureServices(ContainerBuilder builder)
+    private static void ConfigureServices(ContainerBuilder builder)
     {
         builder.RegisterType<TimerService>().As<ITimerService>();
 
@@ -80,5 +83,8 @@ public partial class App
         }).SingleInstance();
         builder.RegisterType<SettingsViewModel>();
         builder.RegisterType<SettingsView>();
+        
+        // Initial
+        builder.RegisterType<InitialView>();
     }
 }

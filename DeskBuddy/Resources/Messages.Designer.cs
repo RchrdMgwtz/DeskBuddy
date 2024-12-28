@@ -105,6 +105,24 @@ namespace DeskBuddy.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        public static string Initial_Start {
+            get {
+                return ResourceManager.GetString("Initial_Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to What is your current position?.
+        /// </summary>
+        public static string Settings_CurrentPosition {
+            get {
+                return ResourceManager.GetString("Settings_CurrentPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Settings_Save {
@@ -119,6 +137,24 @@ namespace DeskBuddy.Resources {
         public static string Settings_SitInterval {
             get {
                 return ResourceManager.GetString("Settings_SitInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sitting.
+        /// </summary>
+        public static string Settings_Sitting {
+            get {
+                return ResourceManager.GetString("Settings_Sitting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Standing.
+        /// </summary>
+        public static string Settings_Standing {
+            get {
+                return ResourceManager.GetString("Settings_Standing", resourceCulture);
             }
         }
         

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using DeskBuddy.Domain;
 using DeskBuddy.Models;
 
 namespace DeskBuddy.ViewModels;
@@ -34,6 +35,18 @@ public sealed partial class SettingsViewModel : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+
+    public Position CurrentPosition
+    {
+        get => _settingsModel.IsStanding ? Position.Standing : Position.Sitting;
+        set
+        {
+            _settingsModel.IsStanding = value == Position.Standing;
+            OnPropertyChanged();
+        }
+    }
+    
+    public Array PositionOptions => Enum.GetValues<Position>();
 
     public ICommand SaveCommand { get; }
     
