@@ -15,32 +15,47 @@ public class TimerService(SettingsModel settingsModel) : ITimerService
     private const string ResetArgument = "reset";
 
     private DispatcherTimer _timer = new();
-    private bool _isStanding;
+    private DateTime _targetTime;
 
     public void Start()
     {
+        var interval =
+            TimeSpan.FromMinutes(settingsModel.IsStanding ? settingsModel.StandInterval : settingsModel.SitInterval);
+
+        _targetTime = DateTime.Now.Add(interval);
+
         _timer = new DispatcherTimer
         {
-            Interval = TimeSpan.FromMinutes(_isStanding ? settingsModel.StandInterval : settingsModel.SitInterval)
+            Interval = TimeSpan.FromSeconds(1)
         };
-        _timer.Tick += Timer_Tick;
+        _timer.Tick += OnTimerTick;
         _timer.Start();
     }
 
     public void OnApplicationExit() => _timer.Stop();
 
-    private void Timer_Tick(object? sender, EventArgs e)
+    private void OnTimerTick(object? sender, EventArgs e)
     {
-        _timer.Stop();
-        ShowNotification();
+        var remainingTime = _targetTime - DateTime.Now;
+
+        if (remainingTime.TotalSeconds > 0)
+        {
+            settingsModel.RemainingTime = remainingTime;
+        }
+        else
+        {
+            _timer.Stop();
+            settingsModel.RemainingTime = TimeSpan.Zero;
+            ShowNotification();
+        }
     }
 
     private void ShowNotification()
     {
-        var title = _isStanding ? Messages.Toast_TimeToSit_Title : Messages.Toast_TimeToStand_Title;
-        var message = _isStanding ? Messages.Toast_TimeToSit_Message : Messages.Toast_TimeToStand_Message;
+        var title = settingsModel.IsStanding ? Messages.Toast_TimeToSit_Title : Messages.Toast_TimeToStand_Title;
+        var message = settingsModel.IsStanding ? Messages.Toast_TimeToSit_Message : Messages.Toast_TimeToStand_Message;
 
-        var fileName = _isStanding ? DownFileName : UpFileName;
+        var fileName = settingsModel.IsStanding ? DownFileName : UpFileName;
         var filePath = Path.Combine(Environment.CurrentDirectory, ResourcesDirectory, fileName);
 
         new ToastContentBuilder()
@@ -59,19 +74,20 @@ public class TimerService(SettingsModel settingsModel) : ITimerService
 
     private void ToastActivated(ToastNotificationActivatedEventArgsCompat e)
     {
-        var newInterval = TimeSpan.FromMinutes(_isStanding ? settingsModel.StandInterval : settingsModel.SitInterval);
+        var newInterval =
+            TimeSpan.FromMinutes(settingsModel.IsStanding ? settingsModel.StandInterval : settingsModel.SitInterval);
+
+        _targetTime = DateTime.Now.Add(newInterval);
 
         switch (e.Argument)
         {
             case OkArgument:
-                _isStanding = !_isStanding;
-                _timer.Interval = newInterval;
+                settingsModel.IsStanding = !settingsModel.IsStanding;
                 break;
             case ResetArgument:
                 break;
             default:
-                _isStanding = !_isStanding;
-                _timer.Interval = newInterval;
+                settingsModel.IsStanding = !settingsModel.IsStanding;
                 break;
         }
 

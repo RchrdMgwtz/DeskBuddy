@@ -63,6 +63,7 @@ public sealed partial class SettingsViewModel : INotifyPropertyChanged
     {
         _settingsModel.SitInterval = SitIntervalMinutes;
         _settingsModel.StandInterval = StandIntervalMinutes;
+        _settingsModel.IsStanding = CurrentPosition == Position.Standing;
         CloseWindow?.Invoke();
     }
 

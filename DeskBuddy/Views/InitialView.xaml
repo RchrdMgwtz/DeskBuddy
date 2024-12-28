@@ -6,11 +6,15 @@
         xmlns:viewModels="clr-namespace:DeskBuddy.ViewModels"
         xmlns:resources="clr-namespace:DeskBuddy.Resources"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:services="clr-namespace:DeskBuddy.Services"
         mc:Ignorable="d"
         Title="{x:Static resources:Messages.Settings_Save}" 
         SizeToContent="Height"
         Width="300"
         Style="{StaticResource MaterialDesignWindow}">
+    <Window.Resources>
+        <services:PositionToStringConverter x:Key="PositionToStringConverter" />
+    </Window.Resources>
     <Grid d:DataContext="{d:DesignInstance Type=viewModels:SettingsViewModel, IsDesignTimeCreatable=True}">
         <StackPanel Margin="10">
             <!-- Sit Interval Input -->
@@ -27,6 +31,11 @@
             <TextBlock Text="{x:Static resources:Messages.Settings_CurrentPosition}" Margin="0,15,0,5" />
             <ComboBox ItemsSource="{Binding PositionOptions}"
                       SelectedItem="{Binding CurrentPosition, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource PositionToStringConverter}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
 
             <!-- Save Button -->

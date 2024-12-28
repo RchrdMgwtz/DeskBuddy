@@ -7,4 +7,6 @@ public class SettingsModel
     public int StandInterval { get; set; }
     
     public bool IsStanding { get; set; }
+
+    public TimeSpan RemainingTime { get; set; }
 }
