@@ -168,6 +168,33 @@ namespace DeskBuddy.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string Timer_Close {
+            get {
+                return ResourceManager.GetString("Timer_Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time remaining until sitting down:.
+        /// </summary>
+        public static string Timer_RemainingUntilSit {
+            get {
+                return ResourceManager.GetString("Timer_RemainingUntilSit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time remaining until standin up:.
+        /// </summary>
+        public static string Timer_RemainingUntilStand {
+            get {
+                return ResourceManager.GetString("Timer_RemainingUntilStand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please lower your desk and sit down..
         /// </summary>
         public static string Toast_TimeToSit_Message {

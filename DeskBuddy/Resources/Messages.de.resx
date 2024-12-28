@@ -59,4 +59,13 @@
     <data name="Initial_Start" xml:space="preserve">
         <value>Start</value>
     </data>
+    <data name="Timer_RemainingUntilSit" xml:space="preserve">
+        <value>Verbleibende Zeit bis zum Hinsetzen:</value>
+    </data>
+    <data name="Timer_RemainingUntilStand" xml:space="preserve">
+        <value>Verbleibende Zeit bis zum Aufstehen:</value>
+    </data>
+    <data name="Timer_Close" xml:space="preserve">
+        <value>Schließen</value>
+    </data>
 </root>

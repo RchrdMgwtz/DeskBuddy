@@ -66,4 +66,13 @@
     <data name="Initial_Start" xml:space="preserve">
         <value>Start</value>
     </data>
+    <data name="Timer_RemainingUntilSit" xml:space="preserve">
+        <value>Time remaining until sitting down:</value>
+    </data>
+    <data name="Timer_RemainingUntilStand" xml:space="preserve">
+        <value>Time remaining until standin up:</value>
+    </data>
+    <data name="Timer_Close" xml:space="preserve">
+        <value>Close</value>
+    </data>
 </root>
