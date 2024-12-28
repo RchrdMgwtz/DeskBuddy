@@ -2,7 +2,7 @@
 
 public class SettingsModel
 {
-    public TimeSpan SitInterval { get; set; }
+    public int SitInterval { get; set; }
 
-    public TimeSpan StandInterval { get; set; }
+    public int StandInterval { get; set; }
 }

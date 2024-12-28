@@ -9,35 +9,28 @@ public sealed partial class SettingsViewModel : INotifyPropertyChanged
 {
     private readonly SettingsModel _settingsModel;
 
-    private double _sitIntervalMinutes;
-    private double _standIntervalMinutes;
-
     public SettingsViewModel(SettingsModel settingsModel)
     {
         _settingsModel = settingsModel;
-
-        SitIntervalMinutes = _settingsModel.SitInterval.TotalMinutes;
-        StandIntervalMinutes = _settingsModel.StandInterval.TotalMinutes;
-
         SaveCommand = new RelayCommand(Save, CanSave);
     }
 
-    public double SitIntervalMinutes
+    public int SitIntervalMinutes
     {
-        get => _sitIntervalMinutes;
+        get => _settingsModel.SitInterval;
         set
         {
-            _sitIntervalMinutes = value;
+            _settingsModel.SitInterval = value;
             OnPropertyChanged();
         }
     }
 
-    public double StandIntervalMinutes
+    public int StandIntervalMinutes
     {
-        get => _standIntervalMinutes;
+        get => _settingsModel.StandInterval;
         set
         {
-            _standIntervalMinutes = value;
+            _settingsModel.StandInterval = value;
             OnPropertyChanged();
         }
     }
@@ -53,8 +46,8 @@ public sealed partial class SettingsViewModel : INotifyPropertyChanged
 
     private void Save()
     {
-        _settingsModel.SitInterval = TimeSpan.FromMinutes(SitIntervalMinutes);
-        _settingsModel.StandInterval = TimeSpan.FromMinutes(StandIntervalMinutes);
+        _settingsModel.SitInterval = SitIntervalMinutes;
+        _settingsModel.StandInterval = StandIntervalMinutes;
     }
 
     private static bool CanSave()

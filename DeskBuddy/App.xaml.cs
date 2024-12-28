@@ -15,10 +15,11 @@ namespace DeskBuddy;
 /// </summary>
 public partial class App
 {
+    private const int SitInterval = 45;
+    private const int StandInterval = 15;
+
     private NotifyIcon _trayIcon = new();
     private ITimerService? _timerService;
-    private readonly TimeSpan _sitInterval = TimeSpan.FromMinutes(0.1);
-    private readonly TimeSpan _standInterval = TimeSpan.FromMinutes(0.25);
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -74,8 +75,8 @@ public partial class App
         // Settings
         builder.RegisterInstance(new SettingsModel
         {
-            SitInterval = _sitInterval,
-            StandInterval = _standInterval
+            SitInterval = SitInterval,
+            StandInterval = StandInterval
         }).SingleInstance();
         builder.RegisterType<SettingsViewModel>();
         builder.RegisterType<SettingsView>();

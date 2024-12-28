@@ -21,7 +21,7 @@ public class TimerService(SettingsModel settingsModel) : ITimerService
     {
         _timer = new DispatcherTimer
         {
-            Interval = _isStanding ? settingsModel.StandInterval : settingsModel.SitInterval
+            Interval = TimeSpan.FromMinutes(_isStanding ? settingsModel.StandInterval : settingsModel.SitInterval)
         };
         _timer.Tick += Timer_Tick;
         _timer.Start();
@@ -59,17 +59,19 @@ public class TimerService(SettingsModel settingsModel) : ITimerService
 
     private void ToastActivated(ToastNotificationActivatedEventArgsCompat e)
     {
+        var newInterval = TimeSpan.FromMinutes(_isStanding ? settingsModel.StandInterval : settingsModel.SitInterval);
+
         switch (e.Argument)
         {
             case OkArgument:
                 _isStanding = !_isStanding;
-                _timer.Interval = _isStanding ? settingsModel.StandInterval : settingsModel.SitInterval;
+                _timer.Interval = newInterval;
                 break;
             case ResetArgument:
                 break;
             default:
                 _isStanding = !_isStanding;
-                _timer.Interval = _isStanding ? settingsModel.StandInterval : settingsModel.SitInterval;
+                _timer.Interval = newInterval;
                 break;
         }
 
