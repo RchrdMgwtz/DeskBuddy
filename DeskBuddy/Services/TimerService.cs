@@ -18,7 +18,14 @@ public class TimerService(SettingsModel settingsModel, TimerViewModel timerViewM
     private DispatcherTimer _timer = new();
     private DateTime _targetTime;
 
-    public void Start()
+    public void Restart()
+    {
+        _timer.Stop();
+        _timer.Tick -= OnTimerTick;
+        Start();
+    }
+
+    private void Start()
     {
         var interval = TimeSpan.FromMinutes(settingsModel.IsStanding
             ? settingsModel.StandInterval

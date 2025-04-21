@@ -36,7 +36,6 @@ public partial class App
         InitializeTrayIcon(container);
 
         _timerService = container.Resolve<ITimerService>();
-        _timerService.Start();
     }
 
     protected override void OnExit(ExitEventArgs e) => _timerService?.OnApplicationExit();
@@ -87,7 +86,7 @@ public partial class App
 
     private static void ConfigureServices(ContainerBuilder builder)
     {
-        builder.RegisterType<TimerService>().As<ITimerService>();
+        builder.RegisterType<TimerService>().As<ITimerService>().SingleInstance();
 
         // Settings
         builder.RegisterInstance(new SettingsModel

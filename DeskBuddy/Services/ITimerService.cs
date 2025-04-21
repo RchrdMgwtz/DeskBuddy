@@ -2,7 +2,7 @@
 
 public interface ITimerService
 {
-    void Start();
+    void Restart();
 
     void OnApplicationExit();
 }
