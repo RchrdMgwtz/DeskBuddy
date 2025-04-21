@@ -8,7 +8,7 @@ namespace DeskBuddy.ViewModels;
 
 public sealed partial class TimerViewModel : INotifyPropertyChanged
 {
-    private SettingsModel _settingsModel;
+    private readonly SettingsModel _settingsModel;
     private TimeSpan _remainingTime;
 
     public TimerViewModel(SettingsModel settingsModel)
@@ -16,6 +16,7 @@ public sealed partial class TimerViewModel : INotifyPropertyChanged
         _settingsModel = settingsModel;
         CloseCommand = new RelayCommand(Close, CanClose);
     }
+
 
     public string TimerMessage => _settingsModel.IsStanding
         ? Messages.Timer_RemainingUntilSit
@@ -29,6 +30,7 @@ public sealed partial class TimerViewModel : INotifyPropertyChanged
             if (_remainingTime == value) return;
             _remainingTime = value;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(TimerMessage));
         }
     }
 
