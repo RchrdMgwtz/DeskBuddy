@@ -12,7 +12,7 @@
         Style="{StaticResource MaterialDesignWindow}">
     <Grid d:DataContext="{d:DesignInstance Type=viewModels:TimerViewModel, IsDesignTimeCreatable=True}">
         <StackPanel Margin="10">
-            <TextBlock Text="Time remaining:"
+            <TextBlock Text="{Binding TimerMessage}"
                      AutomationProperties.Name="Time remaining:"
                      HorizontalAlignment="Center"
                      VerticalAlignment="Top"

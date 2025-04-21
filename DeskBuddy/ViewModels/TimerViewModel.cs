@@ -1,14 +1,25 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using DeskBuddy.Models;
+using DeskBuddy.Resources;
 
 namespace DeskBuddy.ViewModels;
 
 public sealed partial class TimerViewModel : INotifyPropertyChanged
 {
+    private SettingsModel _settingsModel;
     private TimeSpan _remainingTime;
 
-    public TimerViewModel() => CloseCommand = new RelayCommand(Close, CanClose);
+    public TimerViewModel(SettingsModel settingsModel)
+    {
+        _settingsModel = settingsModel;
+        CloseCommand = new RelayCommand(Close, CanClose);
+    }
+
+    public string TimerMessage => _settingsModel.IsStanding
+        ? Messages.Timer_RemainingUntilSit
+        : Messages.Timer_RemainingUntilStand;
 
     public TimeSpan RemainingTime
     {
