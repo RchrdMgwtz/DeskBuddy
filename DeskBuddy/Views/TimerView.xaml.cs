@@ -1,11 +1,13 @@
-﻿using System.Windows;
+﻿using DeskBuddy.ViewModels;
 
 namespace DeskBuddy.Views;
 
-public partial class TimerView : Window
+public partial class TimerView
 {
-    public TimerView()
+    public TimerView(TimerViewModel viewModel)
     {
         InitializeComponent();
+        viewModel.CloseWindow = Close;
+        DataContext = viewModel;
     }
 }

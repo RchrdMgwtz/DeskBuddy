@@ -2,11 +2,12 @@
 using System.Windows.Threading;
 using DeskBuddy.Models;
 using DeskBuddy.Resources;
+using DeskBuddy.ViewModels;
 using Microsoft.Toolkit.Uwp.Notifications;
 
 namespace DeskBuddy.Services;
 
-public class TimerService(SettingsModel settingsModel) : ITimerService
+public class TimerService(SettingsModel settingsModel, TimerViewModel timerViewModel) : ITimerService
 {
     private const string DownFileName = "Down.png";
     private const string UpFileName = "Up.png";
@@ -19,8 +20,9 @@ public class TimerService(SettingsModel settingsModel) : ITimerService
 
     public void Start()
     {
-        var interval =
-            TimeSpan.FromMinutes(settingsModel.IsStanding ? settingsModel.StandInterval : settingsModel.SitInterval);
+        var interval = TimeSpan.FromMinutes(settingsModel.IsStanding
+            ? settingsModel.StandInterval
+            : settingsModel.SitInterval);
 
         _targetTime = DateTime.Now.Add(interval);
 
@@ -40,12 +42,12 @@ public class TimerService(SettingsModel settingsModel) : ITimerService
 
         if (remainingTime.TotalSeconds > 0)
         {
-            settingsModel.RemainingTime = remainingTime;
+            timerViewModel.RemainingTime = remainingTime;
         }
         else
         {
             _timer.Stop();
-            settingsModel.RemainingTime = TimeSpan.Zero;
+            timerViewModel.RemainingTime = TimeSpan.Zero;
             ShowNotification();
         }
     }

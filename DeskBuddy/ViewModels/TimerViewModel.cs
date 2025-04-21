@@ -1,18 +1,24 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using DeskBuddy.Models;
 
 namespace DeskBuddy.ViewModels;
 
-public partial class TimerViewModel : INotifyPropertyChanged
+public sealed partial class TimerViewModel : INotifyPropertyChanged
 {
-    private readonly SettingsModel _settingsModel;
+    private TimeSpan _remainingTime;
 
-    public TimerViewModel(SettingsModel settingsModel)
+    public TimerViewModel() => CloseCommand = new RelayCommand(Close, CanClose);
+
+    public TimeSpan RemainingTime
     {
-        _settingsModel = settingsModel;
-        CloseCommand = new RelayCommand(Close, CanClose);
+        get => _remainingTime;
+        set
+        {
+            if (_remainingTime == value) return;
+            _remainingTime = value;
+            OnPropertyChanged();
+        }
     }
 
     public ICommand CloseCommand { get; }
@@ -21,12 +27,12 @@ public partial class TimerViewModel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
     private void Close() => CloseWindow?.Invoke();
-    
+
     private static bool CanClose() => true;
 }

@@ -3,31 +3,37 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:DeskBuddy.Views"
         xmlns:resources="clr-namespace:DeskBuddy.Resources"
+        xmlns:viewModels="clr-namespace:DeskBuddy.ViewModels"
         mc:Ignorable="d"
-        Title="Timer" SizeToContent="Height" Width="300"
+        Title="Timer" 
+        SizeToContent="Height"
+        MinWidth="300" MaxWidth="400"
         Style="{StaticResource MaterialDesignWindow}">
-    <Grid>
+    <Grid d:DataContext="{d:DesignInstance Type=viewModels:TimerViewModel, IsDesignTimeCreatable=True}">
         <StackPanel Margin="10">
-            <TextBlock Text="Time Remaining:" 
-                       HorizontalAlignment="Center" 
-                       VerticalAlignment="Top" 
-                       FontSize="16" 
-                       Margin="0,20,0,10" />
+            <TextBlock Text="Time remaining:"
+                     AutomationProperties.Name="Time remaining:"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Top"
+                     FontSize="16"
+                     Margin="0,20,0,10" />
             
-            <TextBlock x:Name="RemainingTimeText" 
-                       Text="00:00:00"
-                       HorizontalAlignment="Center" 
-                       VerticalAlignment="Center" 
-                       FontSize="36" 
-                       FontWeight="Bold"
-                       Margin="0,10,0,10"/>
+            <TextBlock x:Name="RemainingTimeText"
+                     Text="{Binding RemainingTime, StringFormat='{}{0:hh\\:mm\\:ss}'}"
+                     AutomationProperties.Name="Remaining Time Value"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     FontSize="36"
+                     FontWeight="Bold"
+                     Margin="0,10,0,10" />
             
-            <Button Content="{x:Static resources:Messages.Timer_Close}" Command="{Binding SaveCommand}"
-                    HorizontalAlignment="Right" MinWidth="75"
+            <Button Content="{x:Static resources:Messages.Timer_Close}" 
+                    Command="{Binding CloseCommand}"
+                    AutomationProperties.Name="{x:Static resources:Messages.Timer_Close}"
+                    HorizontalAlignment="Right" 
+                    MinWidth="75" MaxWidth="150"
                     Margin="10,10,0,10" />
         </StackPanel>
-        
     </Grid>
 </Window>

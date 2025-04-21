@@ -49,12 +49,20 @@ public partial class App
             Visible = true,
             Text = Messages.ApplicationTitle
         };
+        
+        _trayIcon.MouseClick += (_, _) => ShowTimerWindow(container);
 
         var contextMenu = new ContextMenuStrip();
         contextMenu.Items.Add(Messages.Button_Settings, null, (_, _) => ShowConfigurationWindow(container));
         contextMenu.Items.Add(Messages.Button_Exit, null, (_, _) => ShutdownApplication());
 
         _trayIcon.ContextMenuStrip = contextMenu;
+    }
+
+    private static void ShowTimerWindow(IContainer container)
+    {
+        var timerView = container.Resolve<TimerView>();
+        timerView.Show();
     }
 
 
@@ -83,6 +91,10 @@ public partial class App
         }).SingleInstance();
         builder.RegisterType<SettingsViewModel>();
         builder.RegisterType<SettingsView>();
+        
+        // Timer
+        builder.RegisterType<TimerViewModel>().AsSelf().SingleInstance();
+        builder.RegisterType<TimerView>();
         
         // Initial
         builder.RegisterType<InitialView>();
