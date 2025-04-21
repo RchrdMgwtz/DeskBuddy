@@ -29,7 +29,7 @@ public partial class App
         var builder = new ContainerBuilder();
         ConfigureServices(builder);
         var container = builder.Build();
-        
+
         var initialView = container.Resolve<InitialView>();
         initialView.ShowDialog();
 
@@ -49,8 +49,14 @@ public partial class App
             Visible = true,
             Text = Messages.ApplicationTitle
         };
-        
-        _trayIcon.MouseClick += (_, _) => ShowTimerWindow(container);
+
+        _trayIcon.MouseClick += (_, e) =>
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ShowTimerWindow(container);
+            }
+        };
 
         var contextMenu = new ContextMenuStrip();
         contextMenu.Items.Add(Messages.Button_Settings, null, (_, _) => ShowConfigurationWindow(container));
@@ -91,11 +97,11 @@ public partial class App
         }).SingleInstance();
         builder.RegisterType<SettingsViewModel>();
         builder.RegisterType<SettingsView>();
-        
+
         // Timer
         builder.RegisterType<TimerViewModel>().AsSelf().SingleInstance();
         builder.RegisterType<TimerView>();
-        
+
         // Initial
         builder.RegisterType<InitialView>();
     }
